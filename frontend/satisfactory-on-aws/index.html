@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Satisfactory Dedicated Server on AWS — Dustin Umphress</title>
+  <link rel="canonical" href="https://dustinumphress.com/satisfactory-on-aws">
+  <meta name="description"
+    content="Engineering notes on running a Satisfactory dedicated server on AWS using on-demand EC2 + serverless control for cost optimization." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+  <div class="nav wrap">
+    <div class="brand"><a href="/" style="color: inherit; text-decoration: none;">DUSTIN UMPHRESS</a></div>
+    <div class="pill"><span class="dot"></span> Available for Cloud / IT Roles</div>
+  </div>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1 class="title">Satisfactory Dedicated Server on AWS</h1>
+      <p class="subtitle">Optimizing game server costs using event-driven architecture</p>
+    </section>
+
+    <section>
+      <div class="card">
+        <h2>The Constraint</h2>
+        <p>I didn’t start this project because I wanted to build something impressive. I started it because I was
+          lagging.</p>
+        <p>Satisfactory is memory-hungry (12–16 GB RAM), which requires an AWS <code>t3.xlarge</code> instance. Running
+          this 24/7 costs roughly <strong>$130/month</strong>—hard to justify for a server used only a few hours a week.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>The Architecture</h2>
+      <div class="card">
+        <p>Instead of a traditional always-on server, I treated the game session as an on-demand workload. The goal:
+          <strong>pay only when playing</strong>.</p>
+        <ul>
+          <li><strong>Compute:</strong> EC2 (t3.xlarge) for the game server.</li>
+          <li><strong>Control Plane:</strong> AWS Lambda + API Gateway handling Discord Slash Commands
+            (Run/Stop/Status).</li>
+          <li><strong>Networking:</strong> Custom UDP/TCP port configuration (Ports 7777/8888) to bypass common
+            connectivity issues.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>The Challenge: Idle Detection</h2>
+      <div class="card">
+        <p>My first wrong assumption: <em>"Idle detection is easy."</em></p>
+        <p>Satisfactory uses <strong>UDP</strong>, which has no constant connection state. Standard TCP-based "who is
+          connected?" checks failed. The server would shut down mid-game or stay on forever.</p>
+        <p><strong>The Fix:</strong> I implemented traffic monitoring via <code>/proc/net/dev</code>. By sampling
+          network byte deltas over a rolling window, the system can reliably distinguish between active gameplay,
+          background noise, and true inactivity, triggering an automated shutdown only when safe.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Results</h2>
+      <div class="card">
+        <p><strong>Cost Reduction:</strong> Reduced monthly spend from fixed <strong>~$130</strong> to approximately
+          <strong>$0.18/hour</strong> of active play. For our usage patterns, this dropped the bill to practically
+          coffee money.</p>
+        <p>This project validated that AWS can be viable for gaming workloads if you treat cost as a primary design
+          constraint and build the automation to support it.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="card">
+        <h2>Source & Notes</h2>
+        <p>This was a practical exercise in lifecycle management and cost control.</p>
+        <p>👉 <a href="https://github.com/dustinumphress" target="_blank" rel="noopener"><strong>Check my GitHub
+              Profile</strong></a> for related repositories.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="wrap">
+    <div>© <span id="y"></span> Dustin Umphress</div>
+    <div>
+      Built with S3 + CloudFront • Denton, TX •
+      <a href="/" style="color: inherit;">Home</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+
+</html>

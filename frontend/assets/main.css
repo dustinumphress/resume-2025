@@ -56,6 +56,8 @@ body {
 .btn.primary { background: linear-gradient(180deg, rgba(92,193,255,.22), rgba(92,193,255,.12)); border-color: rgba(92,193,255,.45); }
 
 .card { background: #0f1420; border-radius: 16px; padding: 18px; margin-top: 14px; border:1px solid rgba(255,255,255,.08); }
+.card a { color: var(--accent); text-decoration: none; font-weight: 500; }
+.card a:hover { text-decoration: underline; color: #8ad4ff; }
 
 section { margin: 28px 0 0; }
 h2 { font-size: 18px; text-transform: uppercase; letter-spacing: .12em; color: #c9d6ff; margin: 0 0 12px; }
