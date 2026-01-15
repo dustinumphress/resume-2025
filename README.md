@@ -19,19 +19,6 @@ A "serious business" project. It's a deterministic auditing system for medical c
 ### 2. [Satisfactory on AWS](https://dustinumphress.com/satisfactory-on-aws/)
 A "fun business" project. Running a dedicated game server on AWS without going broke. Uses event-driven architecture to shut itself down when nobody is playing.
 
-## Local Dev
-
-If you really want to run this locally:
-
-```bash
-# Backend
-cd backend
-pip install -r requirements.txt
-pytest
-
-# Frontend
-# Just open index.html in a browser. It's that simple.
-```
 
 ---
 *Built by Dustin Umphress. Deployed on AWS.*
