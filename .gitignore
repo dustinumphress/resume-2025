@@ -45,7 +45,7 @@ samconfig.toml
 .cache/
 
 # === Local docs/archives/backups ===
-*.pdf
+# *.pdf
 *.docx
 *.doc
 *.xlsx
