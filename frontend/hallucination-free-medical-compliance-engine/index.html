@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dustin Umphress | Hallucination-Free Medical Compliance Engine</title>
   <link rel="canonical" href="https://dustinumphress.com/hallucination-free-medical-compliance-engine">
-  <meta name="description" content="Hallucination-Free Medical Compliance Engine: A deterministic AI system for medical billing compliance by Dustin Umphress." />
+  <meta name="description"
+    content="Hallucination-Free Medical Compliance Engine: A deterministic AI system for medical billing compliance by Dustin Umphress." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/main.css">
 </head>
+
 <body>
   <div class="nav wrap">
     <div class="brand"><a href="/" style="color: inherit; text-decoration: none;">DUSTIN UMPHRESS</a></div>
@@ -19,24 +22,32 @@
 
   <main class="wrap">
     <section class="hero">
-      <h1 class="title">Hallucination-Free Medical Compliance Engine</h1>
+      <h1 class="title">Medical Compliance Engine</h1>
     </section>
 
     <section>
       <div class="card">
-        <p>I’m <strong>Dustin Umphress</strong>, a cloud and automation engineer with deep experience in healthcare IT and medical billing systems. This project demonstrates how high-risk compliance logic can be implemented using <strong>deterministic data pipelines</strong>, with large language models used strictly for constrained explanation—not decision-making.</p>
-        <p>The goal was to design an AI-assisted auditing system that <strong>cannot hallucinate billing rules</strong>, even when analyzing complex clinical text.</p>
+        <p>I’m <strong>Dustin Umphress</strong>, a cloud and automation engineer with deep experience in healthcare IT
+          and medical billing systems. This project demonstrates how high-risk compliance logic can be implemented using
+          <strong>deterministic data pipelines</strong>, with large language models used strictly for constrained
+          explanation—not decision-making.
+        </p>
+        <p>The goal was to design an AI-assisted auditing system that <strong>hallucinates less</strong>, even when
+          analyzing complex clinical text.</p>
       </div>
     </section>
 
     <section>
       <h2>Project Overview</h2>
       <div class="card">
-        <p>The <strong>Hallucination-Free Medical Compliance Engine</strong> is a serverless Python application that audits medical claims logic against official CMS rule sets, including NCCI edits and MUE limits.</p>
-        <p>Unlike typical “AI wrappers,” this system separates <strong>fact determination</strong> from <strong>natural-language reasoning</strong>:</p>
+        <p>The <strong>Medical Compliance Engine</strong> is a serverless Python application that audits medical
+          claims logic against official CMS rule sets, including NCCI edits and MUE limits.</p>
+        <p>Unlike typical “AI wrappers,” this system separates <strong>fact determination</strong> from
+          <strong>natural-language reasoning</strong>:
+        </p>
         <ul>
-            <li>Deterministic systems decide <em>what is allowed</em></li>
-            <li>The LLM only explains <em>why</em>, based on supplied facts</li>
+          <li>Deterministic systems decide <em>what is allowed</em></li>
+          <li>The LLM only explains <em>why</em>, based on supplied facts</li>
         </ul>
         <p>This architecture is designed for regulated environments where probabilistic answers are unacceptable.</p>
       </div>
@@ -46,13 +57,16 @@
       <h2>Core Technical Principles</h2>
       <div class="card">
         <p><strong>1. Deterministic First, AI Last</strong><br>
-        All compliance decisions are resolved using structured rule data queried from a local database. The language model is never asked to recall, infer, or invent billing rules.</p>
+          All compliance decisions are resolved using structured rule data queried from a local database. The language
+          model is never asked to recall, infer, or invent billing rules.</p>
 
         <p><strong>2. Structured RAG (Not Vector Search)</strong><br>
-        Medical billing rules are binary, not semantic. Retrieval is performed via precise SQL queries against a normalized rules database rather than vector similarity search.</p>
+          Medical billing rules are binary, not semantic. Retrieval is performed via precise SQL queries against a
+          normalized rules database rather than vector similarity search.</p>
 
         <p><strong>3. Privacy by Design</strong><br>
-        Clinical text is redacted locally before any processing. Sensitive identifiers never leave the runtime environment.</p>
+          Clinical text is redacted locally before any processing. Sensitive identifiers never leave the runtime
+          environment.</p>
       </div>
     </section>
 
@@ -60,17 +74,18 @@
       <h2>Architecture Summary</h2>
       <div class="card">
         <p><strong>Language:</strong> Python<br>
-        <strong>Runtime:</strong> Docker on AWS Lambda<br>
-        <strong>Rules Engine:</strong> SQLite (CMS NCCI + MUE datasets)<br>
-        <strong>AI Layer:</strong> LLM via managed cloud inference<br>
-        <strong>Privacy Controls:</strong> Local PHI redaction prior to processing</p>
+          <strong>Runtime:</strong> Docker on AWS Lambda<br>
+          <strong>Rules Engine:</strong> SQLite (CMS NCCI + MUE datasets)<br>
+          <strong>AI Layer:</strong> LLM via managed cloud inference<br>
+          <strong>Privacy Controls:</strong> Local PHI redaction prior to processing
+        </p>
 
         <p><strong>Request Flow:</strong></p>
         <ol>
-            <li>Local PHI redaction using NER</li>
-            <li>CPT code and unit extraction</li>
-            <li>Deterministic rule evaluation via SQL</li>
-            <li>Constrained LLM explanation based only on retrieved facts</li>
+          <li>Local PHI redaction using NER</li>
+          <li>CPT code and unit extraction</li>
+          <li>Deterministic rule evaluation via SQL</li>
+          <li>Constrained LLM explanation based only on retrieved facts</li>
         </ol>
 
         <p>The system is explicitly designed so that <strong>hallucination is structurally impossible</strong>.</p>
@@ -78,44 +93,47 @@
     </section>
 
     <section>
-        <h2>Serverless Engineering Challenge: Cold Starts</h2>
-        <div class="card">
-            <p>The rules database (~300 MB) initially caused unacceptable Lambda cold-start latency when loaded eagerly.</p>
-            <p>This was resolved using a <strong>lazy-loading strategy</strong>:</p>
-            <ul>
-                <li>Containers initialize instantly</li>
-                <li>Database connections are created only on the first audit request</li>
-            </ul>
-            <p>This reduced cold-start latency from over 12 seconds to under 1 second, while preserving a fully serverless deployment model.</p>
-        </div>
+      <h2>Serverless Engineering Challenge: Cold Starts</h2>
+      <div class="card">
+        <p>The rules database (~300 MB) initially caused unacceptable Lambda cold-start latency when loaded eagerly.</p>
+        <p>This was resolved using a <strong>lazy-loading strategy</strong>:</p>
+        <ul>
+          <li>Containers initialize instantly</li>
+          <li>Database connections are created only on the first audit request</li>
+        </ul>
+        <p>This reduced cold-start latency from over 12 seconds to under 1 second, while preserving a fully serverless
+          deployment model.</p>
+      </div>
     </section>
 
     <section>
-        <h2>Scope and Intended Use</h2>
-        <div class="card">
-            <p>This project is intended as:</p>
-            <ul>
-                <li>An internal audit assistance tool</li>
-                <li>A technical architecture demonstration</li>
-                <li>A reference implementation for deterministic AI systems</li>
-            </ul>
-            <p>It is <strong>not</strong> a payer adjudication system and does not replace official CMS or insurer determinations.</p>
-        </div>
+      <h2>Scope and Intended Use</h2>
+      <div class="card">
+        <p>This project is intended as:</p>
+        <ul>
+          <li>An internal audit assistance tool</li>
+          <li>A technical architecture demonstration</li>
+          <li>A reference implementation for deterministic AI systems</li>
+        </ul>
+        <p>It is <strong>not</strong> a payer adjudication system and does not replace official CMS or insurer
+          determinations.</p>
+      </div>
     </section>
 
     <section>
-        <h2>Source Code</h2>
-        <div class="card">
-            <p>The full implementation, including:</p>
-            <ul>
-                <li>CMS data ingestion and normalization</li>
-                <li>SQLite schema design</li>
-                <li>Docker configuration</li>
-                <li>Serverless deployment logic</li>
-            </ul>
-            <p>is available on GitHub:</p>
-            <p>👉 <strong><a href="https://github.com/dustinumphress/medical-compliance-engine" target="_blank" rel="noopener">https://github.com/dustinumphress/medical-compliance-engine</a></strong></p>
-        </div>
+      <h2>Source Code</h2>
+      <div class="card">
+        <p>The full implementation, including:</p>
+        <ul>
+          <li>CMS data ingestion and normalization</li>
+          <li>SQLite schema design</li>
+          <li>Docker configuration</li>
+          <li>Serverless deployment logic</li>
+        </ul>
+        <p>is available on GitHub:</p>
+        <p>👉 <strong><a href="https://github.com/dustinumphress/medical-compliance-engine" target="_blank"
+              rel="noopener">https://github.com/dustinumphress/medical-compliance-engine</a></strong></p>
+      </div>
     </section>
   </main>
 
@@ -131,4 +149,5 @@
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 </body>
+
 </html>
